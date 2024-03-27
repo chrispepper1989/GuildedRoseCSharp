@@ -1,16 +1,15 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
+﻿using csharp;
 
-namespace csharp
+namespace GildedRoseCSharp
 {
     [TestFixture]
     public class GildedRoseTest
     {
-        [Test]
-        public void foo()
+        [TestCase("foo")]
+        public void foo(string name)
         {
             //arrange
-            IList<Item> Items = new List<Item> { new Item { Name = "foo", SellIn = 0, Quality = 0 } };
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = 0, Quality = 0 } };
             GildedRose app = new GildedRose(Items);
             //act
             app.UpdateQuality();
