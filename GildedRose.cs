@@ -111,31 +111,26 @@ namespace csharp
                 item.Quality += 1;
             }
         }
-
+        
 
         private static void UpdateItemQuantity(Item item)
         {
-         
+
             if (item.Quality > 0)
             {
-                if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                {
-                    item.Quality = item.Quality - 1;
-                }
+                item.Quality = item.Quality - 1;
             }
-               
-         
+
+
             item.SellIn = item.SellIn - 1;
 
             if (item.Quality <= 0)
                 return;
-
+           
 
             if (item.SellIn < 0)
             {
-            
                 item.Quality = item.Quality - 1;
-                
                 
             }
         }
