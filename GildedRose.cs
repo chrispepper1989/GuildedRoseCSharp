@@ -93,11 +93,7 @@ namespace csharp
                 
             }
 
-            
-            item.SellIn -= 1;
-            
-
-            if (item.SellIn < 0)
+            if (item.SellIn-1 < 0)
             {
                 item.Quality -= item.Quality;
 
@@ -109,7 +105,7 @@ namespace csharp
         // aged brie improves in quality once past sell by date
         private static int UpdateAgedBrieItemQuanity(Item item)
         {
-            item.SellIn -= 1;
+         
 
             if (item.Quality >= GildedRose.MaxIncreasableQuality)
             {
@@ -118,7 +114,7 @@ namespace csharp
             
             item.Quality += 1;
             //when the sell in is less than 0 (past best before) quality degrades/increases twice as fast
-            if (item.SellIn < 0 && item.Quality < GildedRose.MaxIncreasableQuality)
+            if (item.SellIn - 1 < 0 && item.Quality < GildedRose.MaxIncreasableQuality)
             {
                 item.Quality += 1;
             }
@@ -136,13 +132,13 @@ namespace csharp
             }
 
 
-            item.SellIn = item.SellIn - 1;
+    
 
             if (item.Quality <= 0)
                 return item.Quality; ;
            
 
-            if (item.SellIn < 0)
+            if (item.SellIn -1  < 0)
             {
                 item.Quality = item.Quality - 1;
                 
