@@ -17,6 +17,7 @@ namespace csharp
 
         public void UpdateQuality()
         {
+            
             foreach (var item in Items)
             {
 
@@ -28,23 +29,25 @@ namespace csharp
 
                 // all other items assume day has passed and sellin is reduced
                 int newSellIn = item.SellIn - 1;
+                int newQuality;
                 Item itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
+
                 if (item.IsItem(ValidItems.AgedBrie))
                 {
-                    UpdateAgedBrieItemQuanity(itemCopy);
+                    newQuality = UpdateAgedBrieItemQuanity(itemCopy);
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
-                    UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
+                    newQuality = UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
                     //todo: item.Quality = GetNewBackStagePassQuality(item.Quality, item.SellIn, item.SellIn - 1);
                 }
                 else
                 {
-                    UpdateItemQuantity(itemCopy);
+                    newQuality =UpdateItemQuantity(itemCopy);
                 }
 
                 item.SellIn = newSellIn;
-                item.Quality = itemCopy.Quality;
+                item.Quality = newQuality;
 
             }
         }
@@ -70,7 +73,7 @@ namespace csharp
             return currentQuality + qualityIncrease;
         }
 
-        private static void UpdateBackstagePassToTalk80ETCConcertItemQuantity(Item item)
+        private static int UpdateBackstagePassToTalk80ETCConcertItemQuantity(Item item)
         {
 
             if (item.Quality < MaxIncreasableQuality)
@@ -99,17 +102,18 @@ namespace csharp
                 item.Quality -= item.Quality;
 
             }
+            return item.Quality;
         }
 
 
         // aged brie improves in quality once past sell by date
-        private static void UpdateAgedBrieItemQuanity(Item item)
+        private static int UpdateAgedBrieItemQuanity(Item item)
         {
             item.SellIn -= 1;
 
             if (item.Quality >= GildedRose.MaxIncreasableQuality)
             {
-                return;
+                return item.Quality;
             }
             
             item.Quality += 1;
@@ -118,10 +122,12 @@ namespace csharp
             {
                 item.Quality += 1;
             }
+            return item.Quality;
+
         }
         
 
-        private static void UpdateItemQuantity(Item item)
+        private static int UpdateItemQuantity(Item item)
         {
 
             if (item.Quality > 0)
@@ -133,7 +139,7 @@ namespace csharp
             item.SellIn = item.SellIn - 1;
 
             if (item.Quality <= 0)
-                return;
+                return item.Quality; ;
            
 
             if (item.SellIn < 0)
@@ -141,6 +147,7 @@ namespace csharp
                 item.Quality = item.Quality - 1;
                 
             }
+            return item.Quality;
         }
     }
 }
