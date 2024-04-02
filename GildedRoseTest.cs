@@ -37,12 +37,20 @@ namespace GildedRoseCSharp
         }
 
          [Test]
-         public void Test2()
+         public void TestUpdateQuality()
          {
 
+            // new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20 },
+            // new Item { Name = "Aged Brie", SellIn = 2, Quality = 0 },
+            // new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7 },
+            // new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
+            // new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
 
              //arrange
-             var Items = GenerateTestItems( new [] { "Aged Brie" }, new []{1, 5,10,2,4}, new[] { 1, 2 });
+             var names = new[] { "Aged Brie" , "+5 Dexterity Vest" , "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Sulfuras, Hand of Ragnaros" };
+             var sellIns = new[] { 1, 5, 10, 2, 4 };
+             var qualities = new[] { 0, 1, 2, 5, 7, 20, 80 };
+             var Items = GenerateTestItems(names, sellIns, qualities );
              GildedRose app = new GildedRose(Items);
              //act
              app.UpdateQuality();
