@@ -38,7 +38,6 @@ namespace csharp
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
-                    //newQuality = UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
                     newQuality = GetNewBackStagePassQuality(item.Quality, item.SellIn, newSellIn);
                 }
                 else
@@ -70,51 +69,19 @@ namespace csharp
             int daysRemaining = currentSellIn;
             int qualityIncrease = daysRemaining < 6 ? 3 : (daysRemaining < 11 ? 2 : 1);
 
-            return Math.Min(currentQuality + qualityIncrease, 50);
+            return currentQuality + qualityIncrease;
         }
 
-        private static int UpdateBackstagePassToTalk80ETCConcertItemQuantity(Item item)
-        {
-
-            if (item.Quality < MaxIncreasableQuality)
-            {
-                item.Quality += 1;
-
-             
-                if (item.SellIn < 11 && item.Quality < GildedRose.MaxIncreasableQuality)
-                {
-                    item.Quality += 1;
-                }
-
-                if (item.SellIn < 6 && item.Quality < GildedRose.MaxIncreasableQuality)
-                {
-                    item.Quality += 1;
-                }
-                
-            }
-
-            if (item.SellIn-1 < 0)
-            {
-                item.Quality -= item.Quality;
-
-            }
-            return item.Quality;
-        }
-
+       
 
         // aged brie improves in quality once past sell by date
         private static int UpdateAgedBrieItemQuanity(Item item)
         {
          
-
-            if (item.Quality >= GildedRose.MaxIncreasableQuality)
-            {
-                return item.Quality;
-            }
             
             item.Quality += 1;
             //when the sell in is less than 0 (past best before) quality degrades/increases twice as fast
-            if (item.SellIn - 1 < 0 && item.Quality < GildedRose.MaxIncreasableQuality)
+            if (item.SellIn - 1 < 0)
             {
                 item.Quality += 1;
             }
