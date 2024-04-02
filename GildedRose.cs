@@ -29,6 +29,10 @@ namespace csharp
                     //todo: item.Quality = GetNewBackStagePassQuality(item.Quality, item.SellIn, item.SellIn - 1);
 
                 }
+                else if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
+                {
+                    // do nothing
+                }
                 else
                 {
                     UpdateItemQuantity(item);
@@ -121,7 +125,7 @@ namespace csharp
             }
 
                
-            if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
+           // if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
             {
                 item.SellIn = item.SellIn - 1;
             }
@@ -131,7 +135,7 @@ namespace csharp
           
                 if (item.Quality > 0)
                 {
-                    if(!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
+                   // if(!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
                     {
                         item.Quality = item.Quality - 1;
                     }
