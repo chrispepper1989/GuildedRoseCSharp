@@ -1,0 +1,10 @@
+﻿All Items[0] = Aged Brie, 0, 2
+All Items[1] = Aged Brie, 0, 3
+All Items[2] = Aged Brie, 4, 2
+All Items[3] = Aged Brie, 4, 3
+All Items[4] = Aged Brie, 9, 2
+All Items[5] = Aged Brie, 9, 3
+All Items[6] = Aged Brie, 1, 2
+All Items[7] = Aged Brie, 1, 3
+All Items[8] = Aged Brie, 3, 2
+All Items[9] = Aged Brie, 3, 3
