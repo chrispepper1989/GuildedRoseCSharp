@@ -38,8 +38,8 @@ namespace csharp
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
-                    newQuality = UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
-                    //todo: item.Quality = GetNewBackStagePassQuality(item.Quality, item.SellIn, item.SellIn - 1);
+                    //newQuality = UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
+                    newQuality = GetNewBackStagePassQuality(item.Quality, item.SellIn, newSellIn);
                 }
                 else
                 {
@@ -54,23 +54,23 @@ namespace csharp
         //todo what is wrong ith this function....
         private static int GetNewBackStagePassQuality(int currentQuality, int currentSellIn, int newSellIn)
         {
-            // Backstage passes increase in Quality as SellIn approaches 0
+            /*
+            Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
 
+            Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+            Quality drops to 0 after the concert
+             */
             if (newSellIn < 0)
             {
                 return 0;
             }
-
-            if (currentQuality >= GildedRose.MaxIncreasableQuality)
-            {
-                return currentQuality;
-            }
+           
 
             // Quality increase based on remaining days
             int daysRemaining = currentSellIn;
             int qualityIncrease = daysRemaining < 6 ? 3 : (daysRemaining < 11 ? 2 : 1);
 
-            return currentQuality + qualityIncrease;
+            return Math.Min(currentQuality + qualityIncrease, 50);
         }
 
         private static int UpdateBackstagePassToTalk80ETCConcertItemQuantity(Item item)
