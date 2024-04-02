@@ -33,25 +33,14 @@ namespace csharp
         }
         private static void UpdateAgedBrieItemQuanity(Item item)
         {
-       
+            
+            if (item.Quality < 50)
             {
-                if (item.Quality < 50)
-                {
-                    item.Quality = item.Quality + 1;
-                    
-                   
-                }
+                item.Quality = item.Quality + 1;
             }
-      
-
-            if (item.SellIn < 0)
+            if (item.SellIn < 0 && item.Quality < 50)
             {
-                {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-                    }
-                }
+                item.Quality = item.Quality + 1;
             }
         }
 
