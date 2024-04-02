@@ -17,7 +17,7 @@ namespace csharp
 
         public void UpdateQuality()
         {
-            
+                
             foreach (var item in Items)
             {
                 if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
