@@ -20,21 +20,20 @@ namespace csharp
             
             foreach (var item in Items)
             {
-
                 if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
                 {
                     // do nothing
                     continue;
                 }
 
-                // all other items assume day has passed and sellin is reduced
+                // all other items assume day has passed and sell in is reduced
                 int newSellIn = item.SellIn - 1;
                 int newQuality;
                 var itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
 
                 if (item.IsItem(ValidItems.AgedBrie))
                 {
-                    newQuality = UpdateAgedBrieItemQuanity(itemCopy);
+                    newQuality = GetNewAgedBrieItemQuanity(itemCopy);
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
@@ -42,20 +41,20 @@ namespace csharp
                 }
                 else
                 {
-                    newQuality =UpdateItemQuantity(itemCopy);
+                    newQuality =GetNewStandardItemQuantity(itemCopy);
                 }
 
                 item.SellIn = newSellIn;
-                //qualituy can not be below 0 or above 50
+                //quality can not be below 0 or above 50
                 item.Quality = Math.Clamp(newQuality, 0, MaxIncreasableQuality);
 
             }
         }
-        //todo what is wrong ith this function....
+      
         private static int GetNewBackStagePassQuality(int currentQuality, int currentSellIn, int newSellIn)
         {
             /*
-            Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+            Backstage passes, like aged brie, increases in Quality as its SellIn value approaches;
 
             Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
             Quality drops to 0 after the concert
@@ -73,7 +72,7 @@ namespace csharp
             return currentQuality + qualityIncrease;
         }
 
-        private static int UpdateQuality(Item item, int qualityChange)
+        private static int GetNewItemQuality(Item item, int qualityChange)
         {
 
             int newQuality = item.SellIn-1 < 0
@@ -85,15 +84,15 @@ namespace csharp
 
 
         // aged brie improves in quality once past sell by date
-        private static int UpdateAgedBrieItemQuanity(Item item)
+        private static int GetNewAgedBrieItemQuanity(Item item)
         {
-            return UpdateQuality(item, 1);
+            return GetNewItemQuality(item, 1);
 
         }
 
-        private static int UpdateItemQuantity(Item item)
+        private static int GetNewStandardItemQuantity(Item item)
         {
-            return UpdateQuality(item, -1);
+            return GetNewItemQuality(item, -1);
 
         }
     }
