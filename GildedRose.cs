@@ -34,20 +34,19 @@ namespace csharp
         }
 
      
-
+        // aged brie improves in quality once past sell by date
         private static void UpdateAgedBrieItemQuanity(Item item)
         {
             if (item.Quality >= maxIncreasableQuality)
             {
                 return;
             }
-
-   
-            item.Quality = item.Quality + 1;
-            //when the sellin is less than 0 (past best before) quality degrades twice as fast
+            
+            item.Quality += 1;
+            //when the sell in is less than 0 (past best before) quality degrades/increases twice as fast
             if (item.SellIn < 0 && item.Quality < maxIncreasableQuality)
             {
-                item.Quality = item.Quality + 1;
+                item.Quality += 1;
             }
         }
 
