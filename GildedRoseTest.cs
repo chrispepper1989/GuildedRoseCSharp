@@ -36,27 +36,47 @@ namespace GildedRoseCSharp
 
         }
 
+        //[TestCase(10)] //todo why doesnt this work with Approvals?
+        public void TestUpdateQuality(int days)
+        {
+
+            //arrange
+            var names = new[] { "Aged Brie", "+5 Dexterity Vest", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Sulfuras, Hand of Ragnaros" };
+            var sellIns = new[] { 1, 5, 10, 2, 4 };
+            var qualities = new[] { 0, 1, 2, 5, 29, 30, 50, 75, 90, 100 };
+            var Items = GenerateTestItems(names, sellIns, qualities);
+            GildedRose app = new GildedRose(Items);
+            //act
+            for (var i = 0; i < days; ++i)
+            {
+                app.UpdateQuality();
+            }
+            //assert
+            Approvals.VerifyAll(Items, "All Items");
+
+        }
+
+         
          [Test]
-         public void TestUpdateQuality()
+         public void TestUpdateQuality_1Days()
          {
-
-            // new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20 },
-            // new Item { Name = "Aged Brie", SellIn = 2, Quality = 0 },
-            // new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7 },
-            // new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
-            // new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
-
-             //arrange
-             var names = new[] { "Aged Brie" , "+5 Dexterity Vest" , "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Sulfuras, Hand of Ragnaros" };
-             var sellIns = new[] { 1, 5, 10, 2, 4 };
-             var qualities = new[] { 0, 1, 2, 5, 7, 20, 80 };
-             var Items = GenerateTestItems(names, sellIns, qualities );
-             GildedRose app = new GildedRose(Items);
-             //act
-             app.UpdateQuality();
-             //assert
-             Approvals.VerifyAll(Items,"All Items");
-
+             TestUpdateQuality(1);
          }
+         [Test]
+         public void TestUpdateQuality_5Days()
+         {
+             TestUpdateQuality(5);
+         }
+         [Test]
+         public void TestUpdateQuality_10Days()
+         {
+             TestUpdateQuality(10);
+         }
+         [Test]
+         public void TestUpdateQuality_30Days()
+         {
+             TestUpdateQuality(30);
+         }
+
     }
 }
