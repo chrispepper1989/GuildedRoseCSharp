@@ -19,25 +19,33 @@ namespace csharp
         {
             foreach (var item in Items)
             {
+
+                if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
+                {
+                    // do nothing
+                    continue;
+                }
+
+                // all other items assume day has passed and sellin is reduced
+                int newSellIn = item.SellIn - 1;
+                Item itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
                 if (item.IsItem(ValidItems.AgedBrie))
                 {
-                    UpdateAgedBrieItemQuanity(item);
+                    UpdateAgedBrieItemQuanity(itemCopy);
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
-                    UpdateBackstagePassToTalk80ETCConcertItemQuantity(item);
+                    UpdateBackstagePassToTalk80ETCConcertItemQuantity(itemCopy);
                     //todo: item.Quality = GetNewBackStagePassQuality(item.Quality, item.SellIn, item.SellIn - 1);
-
-                }
-                else if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                {
-                    // do nothing
                 }
                 else
                 {
-                    UpdateItemQuantity(item);
+                    UpdateItemQuantity(itemCopy);
                 }
-                
+
+                item.SellIn = newSellIn;
+                item.Quality = itemCopy.Quality;
+
             }
         }
         //todo what is wrong ith this function....
