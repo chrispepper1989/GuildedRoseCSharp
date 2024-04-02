@@ -20,6 +20,8 @@ namespace csharp
             {
                 if (item.IsItem(ValidItems.AgedBrie))
                 {
+                    //update sellin
+                    item.SellIn -= 1;
                     UpdateAgedBrieItemQuanity(item);
                 }
                 else
@@ -68,12 +70,7 @@ namespace csharp
                     }
                 }
             }
-
-
-            if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-            {
-                item.SellIn = item.SellIn - 1;
-            }
+      
 
             if (item.SellIn < 0)
             {
