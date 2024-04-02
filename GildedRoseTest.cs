@@ -56,9 +56,51 @@ namespace GildedRoseCSharp
             Approvals.VerifyAll(Items, "All Items");
 
         }
+        [Test]
+        public void ConjuredManaCakeDegradesTwiceAsFastAsNormalItems()
+        {
+            //arrange
+            var conitem = ItemHelper.CreateItem(ValidItems.ConjuredManaCake, 10, 100);
+            var normalItem = ItemHelper.CreateItem(ValidItems.ElixirOfMongoose, 10, 100);
 
-         
-         [Test]
+            IList<Item> Items = new List<Item>
+            {
+                conitem,
+                //include normal item twice so it degrades twice as fast
+                normalItem,
+                normalItem
+            };
+
+            GildedRose app = new GildedRose(Items);
+
+            IList<Item> ItemsOverTime = new List<Item>();
+            //act
+            for (var i = 0; i < 100; ++i)
+            {
+                app.UpdateQuality();
+                //assert
+                Assert.AreEqual(conitem.Quality, normalItem.Quality);
+                ItemsOverTime.Add(new Item()
+                {
+                    Name = normalItem.Name,
+                    Quality = normalItem.Quality,
+                    SellIn = normalItem.SellIn
+
+                });
+                ItemsOverTime.Add(new Item()
+                {
+                    Name = conitem.Name,
+                    Quality = conitem.Quality,
+                    SellIn = conitem.SellIn
+
+                });
+
+            }
+            Approvals.VerifyAll(ItemsOverTime, "Conjured Items ");
+
+        }
+
+        [Test]
          public void TestUpdateQuality_1Days()
          {
              TestUpdateQuality(1);
