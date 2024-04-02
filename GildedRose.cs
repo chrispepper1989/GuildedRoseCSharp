@@ -101,8 +101,7 @@ namespace csharp
         }
         public static int GetNewConjuredManaCakeQuality(Item item)
         {
-            return GetNewItemQuality(item, -1);
-
+            return GetNewItemQuality(item, -2);
         }
     }
 }

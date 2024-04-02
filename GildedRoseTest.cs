@@ -14,7 +14,7 @@ namespace GildedRoseCSharp
     {
 
         //generate a bunch of test cases
-        public IList<Item> GenerateTestItems(string[] names, int[] sellIns, int[] qualities)
+        public IList<Item> GenerateTestItems(ValidItems[] names, int[] sellIns, int[] qualities)
         {
             IList<Item> Items = new List<Item>
             {
@@ -25,7 +25,7 @@ namespace GildedRoseCSharp
                 {
                     foreach (var quality in qualities)
                     {
-                        var item = new Item{ Name =name, Quality = quality, SellIn = sellIn};
+                        var item = ItemHelper.CreateItem(name, sellIn, quality);
                         Items.Add( item);
                     }
 
@@ -42,10 +42,14 @@ namespace GildedRoseCSharp
         {
 
             //arrange
-            var names = new[] { "Aged Brie", "+5 Dexterity Vest", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Sulfuras, Hand of Ragnaros" };
+            ValidItems[] namesProper = new[]
+            {
+                ValidItems.AgedBrie, ValidItems.DexterityVest, ValidItems.ElixirOfMongoose,
+                ValidItems.SulfurasHandOfRagnaros, ValidItems.SulfurasHandOfRagnaros
+            };
             var sellIns = new[] { 1, 5, 10, 2, 4 };
             var qualities = new[] { 0, 1, 2, 5, 29 };
-            var Items = GenerateTestItems(names, sellIns, qualities);
+            var Items = GenerateTestItems(namesProper, sellIns, qualities);
             GildedRose app = new GildedRose(Items);
             //act
             for (var i = 0; i < days; ++i)
@@ -76,6 +80,7 @@ namespace GildedRoseCSharp
             {
                 conitem.SellIn -= 1;
                 normalItem.SellIn -= 1;
+                //normal item done twice
                 normalItem.Quality =  GildedRose.GetNewStandardItemQuality(normalItem);
                 normalItem.Quality = GildedRose.GetNewStandardItemQuality(normalItem);
                 conitem.Quality = GildedRose.GetNewConjuredManaCakeQuality(conitem);
