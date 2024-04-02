@@ -27,7 +27,7 @@ namespace csharp
                 }
                 else
                 {
-                    UpdateItemQuanity(item);
+                    UpdateItemQuantity(item);
                 }
                 
             }
@@ -51,7 +51,7 @@ namespace csharp
         }
 
 
-        private static void UpdateItemQuanity(Item item)
+        private static void UpdateItemQuantity(Item item)
         {
             if (!item.IsItem(ValidItems.AgedBrie) && !item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
             {
@@ -116,13 +116,7 @@ namespace csharp
                         item.Quality = item.Quality - item.Quality;
                     }
                 }
-                else
-                {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-                    }
-                }
+                
             }
         }
     }
