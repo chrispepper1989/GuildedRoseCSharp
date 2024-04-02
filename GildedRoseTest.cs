@@ -7,6 +7,7 @@ using csharp;
 
 namespace GildedRoseCSharp
 {
+  
     [UseReporter(typeof(DiffReporter))]
     [TestFixture]
     public class GildedRoseTest

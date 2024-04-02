@@ -1,5 +1,6 @@
 ﻿namespace csharp
 {
+    // Req: do not alter the Item class or Items 
     public class Item
     {
         public string Name { get; set; }
