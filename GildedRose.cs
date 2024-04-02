@@ -111,14 +111,12 @@ namespace csharp
 
         private static void UpdateItemQuantity(Item item)
         {
-            if (!item.IsItem(ValidItems.AgedBrie) && !item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
+         
+            if (item.Quality > 0)
             {
-                if (item.Quality > 0)
+                if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
                 {
-                    if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                    {
-                        item.Quality = item.Quality - 1;
-                    }
+                    item.Quality = item.Quality - 1;
                 }
             }
 
@@ -130,19 +128,13 @@ namespace csharp
 
             if (item.SellIn < 0)
             {
-                if (!item.IsItem(ValidItems.AgedBrie))
+          
+                if (item.Quality > 0)
                 {
-                    if (!item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
+                    if(!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
                     {
-                        if (item.Quality > 0)
-                        {
-                            if(!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                            {
-                                item.Quality = item.Quality - 1;
-                            }
-                        }
+                        item.Quality = item.Quality - 1;
                     }
-
                 }
                 
             }
