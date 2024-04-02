@@ -46,7 +46,8 @@ namespace csharp
                 }
 
                 item.SellIn = newSellIn;
-                item.Quality = Math.Min(newQuality, MaxIncreasableQuality); ;
+                //qualituy can not be below 0 or above 50
+                item.Quality = Math.Max(0,Math.Min(newQuality, MaxIncreasableQuality)); 
 
             }
         }
@@ -72,45 +73,29 @@ namespace csharp
             return currentQuality + qualityIncrease;
         }
 
-       
+        private static int UpdateQuality(Item item, int qualityChange)
+        {
+
+            int newQuality = item.SellIn-1 < 0
+                ? item.Quality + (qualityChange * 2)
+                : item.Quality + qualityChange;
+     
+            return newQuality; 
+        }
+
 
         // aged brie improves in quality once past sell by date
         private static int UpdateAgedBrieItemQuanity(Item item)
         {
-         
-            
-            item.Quality += 1;
-            //when the sell in is less than 0 (past best before) quality degrades/increases twice as fast
-            if (item.SellIn - 1 < 0)
-            {
-                item.Quality += 1;
-            }
-            return item.Quality;
+            return UpdateQuality(item, 1);
 
         }
         
 
         private static int UpdateItemQuantity(Item item)
         {
+            return UpdateQuality(item, -1);
 
-            if (item.Quality > 0)
-            {
-                item.Quality = item.Quality - 1;
-            }
-
-
-    
-
-            if (item.Quality <= 0)
-                return item.Quality; ;
-           
-
-            if (item.SellIn -1  < 0)
-            {
-                item.Quality = item.Quality - 1;
-                
-            }
-            return item.Quality;
         }
     }
 }
