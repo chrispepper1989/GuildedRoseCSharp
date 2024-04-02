@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using GildedRoseCSharp;
 
 namespace csharp
@@ -17,19 +18,8 @@ namespace csharp
 
         public void UpdateQuality()
         {
-                
-            foreach (var item in Items)
-            {
-                if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                {
-                    // do nothing
-                    continue;
-                }
-
-                //getUpdatedItem(item);
-            }
-
-            Items = Items.Select(getUpdatedItem).ToList();
+   
+            Items = Items.ToList().Select(getUpdatedItem).ToList();
         }
 
         private static Item getUpdatedItem(Item item)
