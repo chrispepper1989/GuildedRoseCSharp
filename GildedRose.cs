@@ -30,7 +30,7 @@ namespace csharp
                 // all other items assume day has passed and sellin is reduced
                 int newSellIn = item.SellIn - 1;
                 int newQuality;
-                Item itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
+                var itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
 
                 if (item.IsItem(ValidItems.AgedBrie))
                 {
@@ -47,7 +47,7 @@ namespace csharp
 
                 item.SellIn = newSellIn;
                 //qualituy can not be below 0 or above 50
-                item.Quality = Math.Max(0,Math.Min(newQuality, MaxIncreasableQuality)); 
+                item.Quality = Math.Clamp(newQuality, 0, MaxIncreasableQuality);
 
             }
         }
@@ -90,7 +90,6 @@ namespace csharp
             return UpdateQuality(item, 1);
 
         }
-        
 
         private static int UpdateItemQuantity(Item item)
         {
