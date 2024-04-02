@@ -47,7 +47,7 @@ namespace csharp
                 }
 
                 item.SellIn = newSellIn;
-                item.Quality = newQuality;
+                item.Quality = Math.Min(newQuality, MaxIncreasableQuality); ;
 
             }
         }
