@@ -39,44 +39,32 @@ namespace csharp
 
         private static void UpdateBackstagePassToTalk80ETCConcertItemQuantity(Item item)
         {
-            if (!item.IsItem(ValidItems.AgedBrie) && !item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
+
+            if (item.Quality < 50)
             {
-                if (item.Quality > 0)
-                {
-                    if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                    {
-                        item.Quality = item.Quality - 1;
-                    }
-                }
-            }
-            else
-            {
-                if (item.Quality < 50)
-                {
-                    item.Quality = item.Quality + 1;
+                item.Quality = item.Quality + 1;
 
 
-                    if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
+                if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
+                {
+                    if (item.SellIn < 11)
                     {
-                        if (item.SellIn < 11)
+                        if (item.Quality < 50)
                         {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
+                            item.Quality = item.Quality + 1;
                         }
+                    }
 
-                        if (item.SellIn < 6)
+                    if (item.SellIn < 6)
+                    {
+                        if (item.Quality < 50)
                         {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
+                            item.Quality = item.Quality + 1;
                         }
                     }
                 }
             }
-
+            
 
             if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
             {
@@ -87,17 +75,7 @@ namespace csharp
             {
                 if (!item.IsItem(ValidItems.AgedBrie))
                 {
-                    if (!item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
-                    {
-                        if (item.Quality > 0)
-                        {
-                            if (!item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                            {
-                                item.Quality = item.Quality - 1;
-                            }
-                        }
-                    }
-                    else
+
                     {
                         item.Quality = item.Quality - item.Quality;
                     }
