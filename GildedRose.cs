@@ -12,8 +12,9 @@ namespace csharp
             this.Items = Items;
         }
 
-       
-        
+        private const int maxIncreasableQuality = 50;
+
+
         public void UpdateQuality()
         {
             foreach (var item in Items)
@@ -31,14 +32,20 @@ namespace csharp
                 
             }
         }
+
+     
+
         private static void UpdateAgedBrieItemQuanity(Item item)
         {
-            
-            if (item.Quality < 50)
+            if (item.Quality >= maxIncreasableQuality)
             {
-                item.Quality = item.Quality + 1;
+                return;
             }
-            if (item.SellIn < 0 && item.Quality < 50)
+
+   
+            item.Quality = item.Quality + 1;
+            //when the sellin is less than 0 (past best before) quality degrades twice as fast
+            if (item.SellIn < 0 && item.Quality < maxIncreasableQuality)
             {
                 item.Quality = item.Quality + 1;
             }
