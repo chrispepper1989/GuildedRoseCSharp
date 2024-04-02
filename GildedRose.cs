@@ -37,7 +37,7 @@ namespace csharp
                 }
                 else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
                 {
-                    newQuality = GetNewBackStagePassQuality(item.Quality, item.SellIn, newSellIn);
+                    newQuality = GetNewBackStagePassQuality(item, newSellIn);
                 }
                 else if (item.IsItem(ValidItems.ConjuredManaCake))
                 {
@@ -50,12 +50,12 @@ namespace csharp
 
                 item.SellIn = newSellIn;
                 //quality can not be below 0 or above 50
-                item.Quality = Math.Clamp(newQuality, 0, MaxIncreasableQuality);
+                item.Quality = newQuality;//Math.Clamp(newQuality, 0, MaxIncreasableQuality);
 
             }
         }
       
-        private static int GetNewBackStagePassQuality(int currentQuality, int currentSellIn, int newSellIn)
+        private static int GetNewBackStagePassQuality(Item item, int newSellIn)
         {
             /*
             Backstage passes, like aged brie, increases in Quality as its SellIn value approaches;
@@ -70,10 +70,13 @@ namespace csharp
            
 
             // Quality increase based on remaining days
-            int daysRemaining = currentSellIn;
+            int daysRemaining = item.SellIn;
             int qualityIncrease = daysRemaining < 6 ? 3 : (daysRemaining < 11 ? 2 : 1);
 
-            return currentQuality + qualityIncrease;
+          
+            int newQuality = GetNewItemQuality(item, qualityIncrease);
+            //any new increases are clamped
+            return Math.Clamp(newQuality, 0, MaxIncreasableQuality);
         }
 
         private static int GetNewItemQuality(Item item, int qualityChange)
@@ -82,16 +85,20 @@ namespace csharp
             int newQuality = item.SellIn-1 < 0
                 ? item.Quality + (qualityChange * 2)
                 : item.Quality + qualityChange;
-     
-            return newQuality; 
+
+            return Math.Max(0, newQuality);
         }
 
 
         // aged brie improves in quality once past sell by date
         private static int GetNewAgedBrieItemQuanity(Item item)
         {
-            return GetNewItemQuality(item, 1);
+            if (item.Quality > MaxIncreasableQuality)
+                return item.Quality;
 
+            int newQuality = GetNewItemQuality(item, 1);
+            //any new increases are clamped
+            return Math.Clamp(newQuality, 0, MaxIncreasableQuality);
         }
 
         public static int GetNewStandardItemQuality(Item item)
@@ -101,8 +108,7 @@ namespace csharp
         }
         public static int GetNewConjuredManaCakeQuality(Item item)
         {
-            return GetNewItemQuality(item, -1);
-
+            return GetNewItemQuality(item, -2);
         }
     }
 }
