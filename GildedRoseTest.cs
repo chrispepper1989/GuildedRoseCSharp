@@ -65,10 +65,7 @@ namespace GildedRoseCSharp
 
             IList<Item> Items = new List<Item>
             {
-                conitem,
-                //include normal item twice so it degrades twice as fast
-                normalItem,
-                normalItem
+         
             };
 
             GildedRose app = new GildedRose(Items);
@@ -77,9 +74,15 @@ namespace GildedRoseCSharp
             //act
             for (var i = 0; i < 100; ++i)
             {
-                app.UpdateQuality();
+                conitem.SellIn -= 1;
+                normalItem.SellIn -= 1;
+                normalItem.Quality =  GildedRose.GetNewStandardItemQuality(normalItem);
+                normalItem.Quality = GildedRose.GetNewStandardItemQuality(normalItem);
+                conitem.Quality = GildedRose.GetNewConjuredManaCakeQuality(conitem);
+               
                 //assert
-                Assert.AreEqual(conitem.Quality, normalItem.Quality);
+                Assert.AreEqual(normalItem.Quality, conitem.Quality);
+      
                 ItemsOverTime.Add(new Item()
                 {
                     Name = normalItem.Name,

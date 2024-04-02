@@ -39,9 +39,13 @@ namespace csharp
                 {
                     newQuality = GetNewBackStagePassQuality(item.Quality, item.SellIn, newSellIn);
                 }
+                else if (item.IsItem(ValidItems.ConjuredManaCake))
+                {
+                    newQuality = GetNewConjuredManaCakeQuality(item);
+                }
                 else
                 {
-                    newQuality =GetNewStandardItemQuantity(itemCopy);
+                    newQuality =GetNewStandardItemQuality(itemCopy);
                 }
 
                 item.SellIn = newSellIn;
@@ -90,7 +94,12 @@ namespace csharp
 
         }
 
-        private static int GetNewStandardItemQuantity(Item item)
+        public static int GetNewStandardItemQuality(Item item)
+        {
+            return GetNewItemQuality(item, -1);
+
+        }
+        public static int GetNewConjuredManaCakeQuality(Item item)
         {
             return GetNewItemQuality(item, -1);
 
