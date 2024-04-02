@@ -45,7 +45,7 @@ namespace GildedRoseCSharp
             ValidItems[] namesProper = new[]
             {
                 ValidItems.AgedBrie, ValidItems.DexterityVest, ValidItems.ElixirOfMongoose,
-                ValidItems.SulfurasHandOfRagnaros, ValidItems.SulfurasHandOfRagnaros
+                ValidItems.SulfurasHandOfRagnaros, ValidItems.ConjuredManaCake
             };
             var sellIns = new[] { 1, 5, 10, 2, 4 };
             var qualities = new[] { 0, 1, 2, 5, 29 };
