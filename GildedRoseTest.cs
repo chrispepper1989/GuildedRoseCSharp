@@ -81,9 +81,9 @@ namespace GildedRoseCSharp
                 conitem.SellIn -= 1;
                 normalItem.SellIn -= 1;
                 //normal item done twice
-                normalItem.Quality =  GildedRose.GetNewStandardItemQuality(normalItem);
-                normalItem.Quality = GildedRose.GetNewStandardItemQuality(normalItem);
-                conitem.Quality = GildedRose.GetNewConjuredManaCakeQuality(conitem);
+                normalItem.Quality =  GildedRose.GetNewStandardItemQuality(new ReadOnlyItem(normalItem));
+                normalItem.Quality = GildedRose.GetNewStandardItemQuality(new  ReadOnlyItem(normalItem));
+                conitem.Quality = GildedRose.GetNewConjuredManaCakeQuality(new ReadOnlyItem(conitem));
                
                 //assert
                 Assert.AreEqual(normalItem.Quality, conitem.Quality);

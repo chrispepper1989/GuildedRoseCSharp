@@ -14,56 +14,48 @@ namespace csharp
 
         private const int MaxIncreasableQuality = 50;
 
+        public Item GetUpdatedItem(ReadOnlyItem itemReadOnly)
+        {
+            
+            if (itemReadOnly.Name == ValidItems.SulfurasHandOfRagnaros)
+            {
+                // do nothing
+                return new Item()
+                    { Name = itemReadOnly.NameAsString, Quality = itemReadOnly.Quality, SellIn = itemReadOnly.SellIn };
+            }
+            
+            // all other items assume day has passed and sell in is reduced
+            var newSellIn = itemReadOnly.SellIn - 1;
+
+            var newQuality = itemReadOnly.Name switch
+            {
+                ValidItems.AgedBrie => GetNewAgedBrieItemQuanity(itemReadOnly),
+                ValidItems.BackstagePassToTalk80ETCConcert => GetNewBackStagePassQuality(itemReadOnly, newSellIn),
+                ValidItems.ConjuredManaCake => GetNewConjuredManaCakeQuality(itemReadOnly),
+                _ => GetNewStandardItemQuality(itemReadOnly)
+            };
+
+            return new Item()
+                { Name = itemReadOnly.NameAsString, Quality = newQuality, SellIn = newSellIn };
+        }
 
         public void UpdateQuality()
         {
-                
             foreach (var item in Items)
             {
-                if (item.IsItem(ValidItems.SulfurasHandOfRagnaros))
-                {
-                    // do nothing
-                    continue;
-                }
-
-                // all other items assume day has passed and sell in is reduced
-                int newSellIn = item.SellIn - 1;
-                int newQuality;
-                var itemCopy = new Item() { Name = item.Name, Quality = item.Quality, SellIn = item.SellIn };
-
-                if (item.IsItem(ValidItems.AgedBrie))
-                {
-                    newQuality = GetNewAgedBrieItemQuanity(itemCopy);
-                }
-                else if (item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert))
-                {
-                    newQuality = GetNewBackStagePassQuality(item, newSellIn);
-                }
-                else if (item.IsItem(ValidItems.ConjuredManaCake))
-                {
-                    newQuality = GetNewConjuredManaCakeQuality(item);
-                }
-                else
-                {
-                    newQuality =GetNewStandardItemQuality(itemCopy);
-                }
-
-                newQuality = item switch
-                {
-                    not null when item.IsItem(ValidItems.AgedBrie) => GetNewAgedBrieItemQuanity(itemCopy),
-                    not null when item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert) => GetNewBackStagePassQuality(item, newSellIn),
-                    not null when item.IsItem(ValidItems.ConjuredManaCake) => GetNewConjuredManaCakeQuality(item),
-                    _ => GetNewStandardItemQuality(itemCopy),
-                };
-
-                item.SellIn = newSellIn;
-                //quality can not be below 0 or above 50
-                item.Quality = newQuality;//Math.Clamp(newQuality, 0, MaxIncreasableQuality);
-
+                var newItem = GetUpdatedItem(new ReadOnlyItem(item));
+                item.Quality= newItem.Quality;
+                item.SellIn = newItem.SellIn;
             }
         }
+
+        // a more functional approach
+        public IEnumerable<Item> GetUpdateQualities(IList<Item> items)
+        {
+            return items.Select(item => GetUpdatedItem(new ReadOnlyItem(item)));
+        }
       
-        private static int GetNewBackStagePassQuality(Item item, int newSellIn)
+        private static int GetNewBackStagePassQuality(ReadOnlyItem item, int newSellIn)
         {
             /*
             Backstage passes, like aged brie, increases in Quality as its SellIn value approaches;
@@ -85,7 +77,7 @@ namespace csharp
             return GetNewItemQuality(item, qualityIncrease);
         }
 
-        private static int GetNewItemQuality(Item item, int qualityChange)
+        private static int GetNewItemQuality(ReadOnlyItem item, int qualityChange)
         {
 
             var newQuality = item.SellIn-1 < 0
@@ -103,7 +95,7 @@ namespace csharp
 
 
         // aged brie improves in quality once past sell by date
-        private static int GetNewAgedBrieItemQuanity(Item item)
+        private static int GetNewAgedBrieItemQuanity(ReadOnlyItem item)
         {
             if (item.Quality > MaxIncreasableQuality)
                 return item.Quality;
@@ -112,12 +104,12 @@ namespace csharp
 
         }
 
-        public static int GetNewStandardItemQuality(Item item)
+        public static int GetNewStandardItemQuality(ReadOnlyItem item)
         {
             return GetNewItemQuality(item, -1);
 
         }
-        public static int GetNewConjuredManaCakeQuality(Item item)
+        public static int GetNewConjuredManaCakeQuality(ReadOnlyItem item)
         {
             return GetNewItemQuality(item, -2);
         }

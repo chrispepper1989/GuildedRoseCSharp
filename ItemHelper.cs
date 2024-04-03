@@ -40,6 +40,14 @@ namespace GildedRoseCSharp
         {
             return item.Name == ItemNames[itemType];
         }
+        public static ValidItems ConvertToValidItem(string name)
+        {
+            if (!ItemNames.ContainsValue(name))
+            {
+                throw new Exception($"Failed to convert {name} to a ValidItems enum: ({string.Join(" | ",ItemNames.Values)})");
+            }
+            return ItemNames.First(x => x.Value == name).Key;
+        }
 
         public static Item CreateItem(ValidItems itemType, int sellIn, int quality)
         {
