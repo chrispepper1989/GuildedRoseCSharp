@@ -14,14 +14,13 @@ namespace csharp
 
         private const int MaxIncreasableQuality = 50;
 
-        public Item GetUpdatedItem(ReadOnlyItem itemReadOnly)
+        private (int newQuality, int newSellIn) GetUpdatedValues(ReadOnlyItem itemReadOnly)
         {
             
             if (itemReadOnly.Name == ValidItems.SulfurasHandOfRagnaros)
             {
-                // do nothing
-                return new Item()
-                    { Name = itemReadOnly.NameAsString, Quality = itemReadOnly.Quality, SellIn = itemReadOnly.SellIn };
+                // leave as is
+                return (itemReadOnly.Quality, itemReadOnly.SellIn);
             }
             
             // all other items assume day has passed and sell in is reduced
@@ -35,24 +34,32 @@ namespace csharp
                 _ => GetNewStandardItemQuality(itemReadOnly)
             };
 
-            return new Item()
-                { Name = itemReadOnly.NameAsString, Quality = newQuality, SellIn = newSellIn };
+            return (newQuality, newSellIn);
         }
 
         public void UpdateQuality()
         {
             foreach (var item in Items)
             {
-                var newItem = GetUpdatedItem(new ReadOnlyItem(item));
-                item.Quality= newItem.Quality;
-                item.SellIn = newItem.SellIn;
+                var (updatedQuality, updatedSellIn) = GetUpdatedValues(new ReadOnlyItem(item));
+                item.Quality= updatedQuality;
+                item.SellIn = updatedSellIn;
             }
         }
 
+        private Item GetNewItem(Item itemOriginal)
+        {
+            var item = new Item();
+            var (updatedQuality, updatedSellIn) = GetUpdatedValues(new ReadOnlyItem(itemOriginal));
+            item.Quality = updatedQuality;
+            item.SellIn = updatedSellIn;
+            item.Name = itemOriginal.Name;
+            return item;
+        }
         // a more functional approach
         public IEnumerable<Item> GetUpdateQualities(IList<Item> items)
         {
-            return items.Select(item => GetUpdatedItem(new ReadOnlyItem(item)));
+            return items.Select(GetNewItem);
         }
       
         private static int GetNewBackStagePassQuality(ReadOnlyItem item, int newSellIn)
