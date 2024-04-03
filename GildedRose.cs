@@ -48,6 +48,8 @@ namespace csharp
                     newQuality =GetNewStandardItemQuality(itemCopy);
                 }
 
+                
+
                 item.SellIn = newSellIn;
                 //quality can not be below 0 or above 50
                 item.Quality = newQuality;//Math.Clamp(newQuality, 0, MaxIncreasableQuality);
@@ -70,23 +72,27 @@ namespace csharp
            
 
             // Quality increase based on remaining days
-            int daysRemaining = item.SellIn;
-            int qualityIncrease = daysRemaining < 6 ? 3 : (daysRemaining < 11 ? 2 : 1);
+            var daysRemaining = item.SellIn;
+            var qualityIncrease = daysRemaining < 6 ? 3 : (daysRemaining < 11 ? 2 : 1);
 
           
-            int newQuality = GetNewItemQuality(item, qualityIncrease);
-            //any new increases are clamped
-            return Math.Clamp(newQuality, 0, MaxIncreasableQuality);
+            return GetNewItemQuality(item, qualityIncrease);
         }
 
         private static int GetNewItemQuality(Item item, int qualityChange)
         {
 
-            int newQuality = item.SellIn-1 < 0
+            var newQuality = item.SellIn-1 < 0
                 ? item.Quality + (qualityChange * 2)
                 : item.Quality + qualityChange;
 
-            return Math.Max(0, newQuality);
+            //any new increases are clamped
+            if (newQuality > item.Quality)
+            {
+                return Math.Clamp(newQuality, 0, MaxIncreasableQuality);
+            }
+            return  Math.Max(0, newQuality);
+
         }
 
 
@@ -96,9 +102,8 @@ namespace csharp
             if (item.Quality > MaxIncreasableQuality)
                 return item.Quality;
 
-            int newQuality = GetNewItemQuality(item, 1);
-            //any new increases are clamped
-            return Math.Clamp(newQuality, 0, MaxIncreasableQuality);
+            return GetNewItemQuality(item, 1);
+
         }
 
         public static int GetNewStandardItemQuality(Item item)
