@@ -48,7 +48,13 @@ namespace csharp
                     newQuality =GetNewStandardItemQuality(itemCopy);
                 }
 
-                
+                newQuality = item switch
+                {
+                    not null when item.IsItem(ValidItems.AgedBrie) => GetNewAgedBrieItemQuanity(itemCopy),
+                    not null when item.IsItem(ValidItems.BackstagePassToTalk80ETCConcert) => GetNewBackStagePassQuality(item, newSellIn),
+                    not null when item.IsItem(ValidItems.ConjuredManaCake) => GetNewConjuredManaCakeQuality(item),
+                    _ => GetNewStandardItemQuality(itemCopy),
+                };
 
                 item.SellIn = newSellIn;
                 //quality can not be below 0 or above 50
